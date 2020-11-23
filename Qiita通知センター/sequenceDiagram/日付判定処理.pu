@@ -1,0 +1,4 @@
+@startuml 日付判定処理
+    ArticleWorker --> judgePostArticle : hasPostedArticle()
+    judgePostArticle --> 
+@enduml

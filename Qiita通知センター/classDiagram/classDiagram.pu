@@ -1,0 +1,65 @@
+@startuml クラス図
+    class MainActivity{
+        + fun setTagOnClick()
+        + fun stopWorker()
+    }
+
+    class ArticleWorker{
+        + fun doWork():Result
+        - fun notifyManager()   
+    }
+
+    class judgePostArticle{
+        + hasLatestArticle()
+    
+    }
+
+    class HttpQiitaClient{
+        - response : String
+        - fun getAsync(api:String):String
+    }
+
+    class ArticleConverter{
+        - responseMessage : String
+        + dateString : String
+        - fun tryParseDateToString() 
+        + fun parseUrl()
+        + fun parseTitle()
+        + fun updateToDate() 
+    }
+    class DateAnalyzer{
+        + dateString : String
+        + date : String
+        - fun dateAnalysis(dateStr:String):Date
+    }
+
+    class CollectArticles{
+        - api : String
+        + articleTitle : String
+        + articleUrl   : String
+        + articleDate  : Date
+    }
+
+    class QiitaApi{
+        + fun getArticlesFilterByTag(tag:String):String
+    }
+    MainActivity -- ArticleWorker : プロセス開始
+    ArticleWorker -- judgePostArticle: 最新の記事があるかチェック
+    judgePostArticle -right- CollectArticles : 記事を収集させる
+    QiitaApi -- CollectArticles
+    note right on link
+        コンストラクターにApiを渡す
+    end note
+    CollectArticles  -- HttpQiitaClient : 最新の記事を取らせる
+    note right on link
+        コンストラクターにApiを渡す
+    end note
+    CollectArticles -right- ArticleConverter : json型の記事の解析
+    note bottom on link
+        getAsyncの結果をコンストラクターに渡す
+    end note
+    ArticleConverter -up- DateAnalyzer   : 文字列の日付をDate型に変換
+    note right on link
+        updateToDate()の中で呼び出す
+    end note
+@enduml

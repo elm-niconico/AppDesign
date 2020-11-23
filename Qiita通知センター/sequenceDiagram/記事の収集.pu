@@ -1,0 +1,16 @@
+@startuml fun_記事の収集
+ activate CollectArticles
+    CollectArticles -> HttpQiitaClient : getAsync(api)
+   
+    activate HttpQiitaClient
+    HttpQiitaClient --> CollectArticles : reponseMessage
+    
+    deactivate HttpQiitaClient
+    CollectArticles -> ArticleConverter :  convertToArticleInfo()
+    activate ArticleConverter
+    ArticleConverter -> DataAnalyzer : dataAanalysis
+    activate DataAnalyzer
+    DataAnalyzer --> ArticleConverter : date
+    deactivate DataAnalyzer
+    ArticleConverter --> CollectArticles : ArticleInfo 
+@enduml

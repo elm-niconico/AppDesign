@@ -1,0 +1,69 @@
+@startuml UIクラス図
+    package sqlite{
+
+        class SQLiteDao{
+            + fun insertTagInfo()
+            + fun selectRegesteTag()
+            + fun deleteTagInfo()
+        }
+
+        class TagInfoDto{
+            + followers_count : Int
+            + icon_url        : String
+            + tagId           : String
+            + items_count     :Int
+        }
+    }
+    package model{
+        package generator{
+            interface IGenerateTagInfo{
+                + fun generateTagInfo() : Array<TagInfo>
+                - fun generateOneTagInfo() : TagInfo()
+            }
+            class GenerateHttpTagInfo{
+                + fun generateTagInfo() : Array<TagInfo>
+                - fun generateOneTagInfo() : TagInfo()
+            }
+            class GenerateSQLiteTagInfo{
+                + fun generateTagInfo() : Array<TagInfo>
+                - fun generateOneTagInfo() : TagInfo()
+            }
+        }
+        GenerateHttpTagInfo   --|> IGenerateTagInfo
+        GenerateSQLiteTagInfo --|> IGenerateTagInfo
+
+        package converter{
+            class TagInfoConverter{
+                - jsonTagInfos : jsonArray
+             
+                - fun getFollowersCount():Int
+                - fun getIconUrl():String?
+                - fun getTagId() : String
+                - fun getItemsCount() : Int
+            }
+        }
+
+    }
+    
+
+    package viewModel{
+        class TagInfoListViewHolder{
+        - followersCount : Int
+        - icon : Icon
+        - tagId : String
+        - itemsCount : Int
+        }
+
+        class TagInnfoListViewAdapter{
+            + onBindViewHolder()
+            + getItemCount() : Int
+        }
+    
+    }
+
+    TagInfoDto -- TagInfoListViewHolder : 設定をセット
+    GenerateSQLiteTagInfo --> SQLiteDao : 設定ファイルを読み込む
+    GenerateSQLiteTagInfo -- TagInfoDto : 値をセット
+    GenerateHttpTagInfo -- TagInfoConverter : Jsonから値を取得    
+    
+@enduml

@@ -1,0 +1,5 @@
+エンドポイント = https://qiita.com/api/v2/items
+
+タグ一覧を返す(一部だけ表示される仕様みたい?) = https://qiita.com/api/v2/tags
+タグ指定      =  https://qiita.com/api/v2/tags/:tag_id
+複数のタグ指定 = ?query=tag:tag_id OR tag:tag_id
