@@ -1,0 +1,80 @@
+@startuml クラス図
+    
+    'TOP画面
+    class TopFragment 
+    'Youtubeライブ検索フラグメント
+    class SearchVideoFragment
+    
+   together {
+        '降順に取得するAPI
+        class YoutubeApiOrderByLanking{}
+        '検索パラメータによるフィルタをかけて降順に取得
+        class YoutubeApiFilterByParam
+    }
+    class LiveInfoListOperationStandard{
+
+    }
+
+    interface OperationYoutubeApi{
+        fun getApi(args:String): String
+    }
+  
+
+    class YoutubeHttpClient{
+        
+        + {static} fun getAsync(api:YoutubeApi):String
+    }
+
+    interface OperationLiveInofMaker{
+        - response : JsonArray
+
+        + fun makeViewModels() : List<LiveInfoViewModel>
+    }
+    class LiveInfoMakerStandard
+    
+    interface LiveInfoData
+    interface LiveInfoViewModel
+    interface LiveInfoListAdapter
+   
+    
+    abstract class FragmentOperation{
+        - api : OperationYoutubeApi
+        - adapter : LiveInfoListAdapter
+        - list    : YoutubeReclerView
+        
+        + fun updateList()
+        - {abstract} fun getLiveInfoAsync(Api:YoutubeApi):String
+        - {abstract} fun makeLiveInfo(response:String) : LiveInfoViewModel
+        - {abstract} fun updateLiveInfoList(viewModel:List<LiveInfoViewModel>)  
+    }
+    '============TopFragment
+    TopFragment         --> LiveInfoMakerStandard
+    SearchVideoFragment --> LiveInfoMakerStandard
+
+    TopFragment --> YoutubeApiOrderByLanking
+    SearchVideoFragment --> YoutubeApiFilterByParam
+
+
+    TopFragment --> LiveInfoListOperationStandard
+    SearchVideoFragment --> LiveInfoListOperationStandard
+    LiveInfoListOperationStandard ---|> FragmentOperation
+    '===============API
+    YoutubeApiFilterByParam  ..|> OperationYoutubeApi
+    YoutubeApiOrderByLanking ..|> OperationYoutubeApi
+
+    LiveInfoListAdapter *--> LiveInfoViewModel
+    
+    'Maker
+    LiveInfoMakerStandard .down.|> OperationLiveInofMaker
+
+    LiveInfoViewModel -> LiveInfoData
+    '=========FragmentOperarion
+    FragmentOperation *-up-> OperationYoutubeApi
+    FragmentOperation *-left-> OperationLiveInofMaker
+    FragmentOperation -right-> YoutubeHttpClient
+   
+    
+
+    FragmentOperation --> LiveInfoListAdapter
+
+@enduml
