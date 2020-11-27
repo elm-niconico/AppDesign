@@ -7,7 +7,7 @@
     
    together {
         '降順に取得するAPI
-        class YoutubeApiOrderByLanking{}
+        class YoutubeApiOrderByRanking{}
         '検索パラメータによるフィルタをかけて降順に取得
         class YoutubeApiFilterByParam
     }
@@ -51,7 +51,7 @@
     TopFragment         --> LiveInfoMakerStandard
     SearchVideoFragment --> LiveInfoMakerStandard
 
-    TopFragment --> YoutubeApiOrderByLanking
+    TopFragment --> YoutubeApiOrderByRanking
     SearchVideoFragment --> YoutubeApiFilterByParam
 
 
@@ -60,7 +60,7 @@
     LiveInfoListOperationStandard ---|> FragmentOperation
     '===============API
     YoutubeApiFilterByParam  ..|> OperationYoutubeApi
-    YoutubeApiOrderByLanking ..|> OperationYoutubeApi
+    YoutubeApiOrderByRanking ..|> OperationYoutubeApi
 
     LiveInfoListAdapter *--> LiveInfoViewModel
     
