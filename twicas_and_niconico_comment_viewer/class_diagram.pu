@@ -1,0 +1,65 @@
+@startuml model_コメント取得クラス図
+    interface TcpClient{
+        fun ConnectServerService(api:Api)
+        fun receiveResponse(): Response
+    }
+    class NicoNicoTcpClient{
+
+    }
+    class TwicasTcpClient{
+
+    }
+
+    interface API{
+        fun getAPi(): String
+    }
+
+    class NicoNicoAPI{}
+
+    class TwicasAPI{}
+    class ConverterStandard { 
+    }
+
+    abstract class Converter{
+        - userInfo : Json
+        - userId: string
+        - userIcon: Uri
+        - comment: string
+
+        fun convertToUserInfo(response:Response):UserInfo
+        -  fun convertToJson(response: Response): Json
+        -  fun extractUserId(): string
+        -  fun extractUserIcon(): Uri
+        -  fun extractComment(): String
+        + {abstract} fun<T extends UserInfoModel> build(): T  
+    }
+
+    class UserInfoModel{
+        - userId : string;
+        - userIcon : Uri
+        - comment : string
+    }
+    
+    class ConnectServerService{
+        + async fun ConnectServerService(): UserInfo
+        - fun convertToUserInfo(response: Response) : UserInfo
+    }
+    'コネクトサーバ
+    ConnectServerService ---|> TcpClient
+    ConnectServerService -left-|> Converter
+    ConnectServerService -right-|> API
+    'ユーザー情報
+    UserInfoModel +--> Converter
+    'コンバータ
+    Converter --> UserInfoModel
+    'クライアント
+    NicoNicoTcpClient .right.> TcpClient
+    TwicasTcpClient .left.> TcpClient
+    UserInfoStandardModel -right-|> UserInfoModel
+
+    TwicasAPI ..|> API
+    NicoNicoAPI ..|> API
+    ConverterStandard -right-|> Converter
+ 
+
+@enduml
