@@ -10,14 +10,38 @@
 
     }
 
-    interface API{
-        fun getAPi(): String
+    interface ConnectLiveApi{
+        fun getLiveInfo(): String
+    }
+    
+    interface AuthenticationApi{
+        fun getAuthenticationInformationApi(): String
+        fun getSimpleAuthenticationInformationApi(): string
     }
 
-    class NicoNicoAPI{}
+    class NiconicoApi {}
 
-    class TwicasAPI{}
+    class TwicasApi{}
+
     class ConverterStandard { 
+    }
+
+    abstract class ConnectCommentServer {
+        + fun fetchCommentAsync(): UserInfoStandardModel;
+        - {abstract} fun extarctWebsokectUrl(): string;
+        - {abstract} async fun fetchCommentAsync(url:string): Response;
+        - {abstract} fun fun convertToUserInfoModel(response:Response): UserInfoModel;
+    }
+
+    interface LiveRestClient{
+        + fun getWebSocketUrl(): string;
+    }
+    class NiconicoRestClient{
+
+    }
+    class HttpClient{
+        + {static} getAsync(request:string): Response<String>;
+        + {static} postAsync(request:string): Response<String>;
     }
 
     abstract class Converter{
@@ -45,21 +69,31 @@
         - fun convertToUserInfo(response: Response) : UserInfo
     }
     'コネクトサーバ
-    ConnectServerService ---|> TcpClient
-    ConnectServerService -left-|> Converter
-    ConnectServerService -right-|> API
+    ConnectServerService *--|> ConnectCommentServer
+    'コネクトコメントサーバ'
+    ConnectCommentServer *--|> LiveRestClient
+    ConnectCommentServer *-right-|> TcpClient
+    ConnectCommentServer *-left-|> Converter
+
+
     'ユーザー情報
     UserInfoModel +--> Converter
     'コンバータ
     Converter --> UserInfoModel
     'クライアント
-    NicoNicoTcpClient .right.> TcpClient
+    NicoNicoTcpClient .up.> TcpClient
     TwicasTcpClient .left.> TcpClient
+    'ユーザー情報モデル
     UserInfoStandardModel -right-|> UserInfoModel
-
-    TwicasAPI ..|> API
-    NicoNicoAPI ..|> API
+    'レストクライアント
+    NiconicoRestClient .right.|> LiveRestClient
+    TwicasRestClient   .left.|>  LiveRestClient
+    LiveRestClient -down-> HttpClient
+    TwicasApi ..|>   ConnectLiveApi
+    NiconicoApi ..|> ConnectLiveApi
+    TwicasApi ..|>  AuthenticationApi
+    
     ConverterStandard -right-|> Converter
- 
+
 
 @enduml
