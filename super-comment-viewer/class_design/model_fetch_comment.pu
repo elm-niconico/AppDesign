@@ -1,4 +1,4 @@
-@startuml model_コメント取得クラス図
+@startuml コメント取得クラス図
     interface TcpClient{
         fun ConnectServerService(api:Api)
         fun receiveResponse(): Response
