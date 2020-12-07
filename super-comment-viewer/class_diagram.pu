@@ -10,18 +10,13 @@
 
     }
 
-    interface ConnectLiveApi{
-        fun getLiveInfo(): String
-    }
-    
-    interface AuthenticationApi{
-        fun getAuthenticationInformationApi(): String
-        fun getSimpleAuthenticationInformationApi(): string
-    }
 
-    class NiconicoApi {}
+    class NiconicoCommentServer{
 
-    class TwicasApi{}
+    }
+    class TwicasCommentServer{
+
+    }
 
     class ConverterStandard { 
     }
@@ -32,6 +27,10 @@
         - {abstract} async fun fetchCommentAsync(url:string): Response;
         - {abstract} fun fun convertToUserInfoModel(response:Response): UserInfoModel;
     }
+    note left of ServerFactory::createServer
+        コメントサーバを生成           
+    end note
+
 
     interface LiveRestClient{
         + fun getWebSocketUrl(): string;
@@ -43,6 +42,12 @@
         + {static} getAsync(request:string): Response<String>;
         + {static} postAsync(request:string): Response<String>;
     }
+
+    class ServerFactory{
+        - select: SelectLive  
+        + fun createServer(): ConnectCommentServer
+    }
+
 
     abstract class Converter{
         - userInfo : Json
@@ -89,11 +94,14 @@
     NiconicoRestClient .right.|> LiveRestClient
     TwicasRestClient   .left.|>  LiveRestClient
     LiveRestClient -down-> HttpClient
-    TwicasApi ..|>   ConnectLiveApi
-    NiconicoApi ..|> ConnectLiveApi
-    TwicasApi ..|>  AuthenticationApi
+
     
     ConverterStandard -right-|> Converter
+    'コメントサーバ
+    NiconicoCommentServer --|> ConnectCommentServer
+    TwicasCommentServer   --|> ConnectCommentServer
 
-
+    'サーバーファクトリ-
+    ServerFactory --> NiconicoCommentServer
+    ServerFactory --> TwicasCommentServer
 @enduml
