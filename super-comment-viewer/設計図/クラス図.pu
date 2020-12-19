@@ -1,0 +1,66 @@
+@startuml コメント取
+    '=======コンポーネント========
+    'URLForm
+    class UrlFormComponent
+    note left of UrlFormComponent
+        放送Urlを入力させる
+    end note
+
+
+
+    abstract class UserIdConverter{
+        + fun extractUserId(url: string): string
+    }
+    note left of UserIdConverter::extractUserId
+        ユーザーが入力したURLからUserIdを抽出
+    end note
+    class CommentComponent
+    abstract class ConnectCommentServer{
+        + readToCommentFormServerAsync(): Promise<CommentInfoModel>
+        - extractWebsocketUrlAsync(): Promise<string>
+        - *commentAsyncGenerate(): AsyncGenerator<string>
+        - convertToCommentInfoModel(): CommentInfoModel
+    }
+    note top of ConnectCommentServer
+        ストラテジーパターン
+    end note
+    'コメントコンポーネント
+    class CommentListComponent
+    note left of CommentListComponent
+        コメント情報リストを所持する
+    end note
+
+    class CommentComponent
+    note left of CommentComponent
+        コメント情報を所持する
+    end note
+
+    '====== サービス ==============
+    class TwicasCommentServerService
+   
+    '===== ロジック ===============
+    '========= メインプロセス =============
+    'WebSocket
+    interface ILiveWebSocketClient{
+        - startConnectWebSocket(userId: string): boolean
+        + *commentAsyncGenerate(): AsyncGenerator<string>
+    }
+    '========= レンダラープロセス =========
+    'コンバーター
+    interface IConverterCommentInfoModel
+
+
+    CommentListComponent -down-> CommentComponent :  コメントコンポーネントにコメントを送る
+
+    'UrlForm
+    UrlFormComponent *--> UserIdConverter
+    UrlFormComponent *-up-> TwicasCommentServerService 
+    ConnectCommentServer -left-> CommentComponent
+    'UserIdConverter
+    UserIdConverter <|-down- TwicasIdConverter
+    UserIdConverter <|-down- NicoNicoIdConverter
+    'ConnectCommentServer
+    ConnectCommentServer <|-right- TwicasCommentServerService
+    ConnectCommentServer *-down--> ILiveWebSocketClient
+    ConnectCommentServer *-down--> IConverterCommentInfoModel
+@enduml

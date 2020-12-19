@@ -1,0 +1,19 @@
+@startuml ユーザーId取得&受け渡し
+UrlFormComponent ->  UserIdConverter : testValidateLiveUrl(url: string)
+
+UrlFormComponent ->  UserIdConverter : extractUserId(url: string)
+activate UrlFormComponent
+activate UserIdConverter
+UrlFormComponent <-- UserIdConverter : userId || null
+deactivate UserIdConverter
+alt userIdがnullじゃない
+   UrlFormComponent -> UserInfoService : handOverUserId(userId: stirng)
+   activate UserInfoService
+   UserInfoService -> CommentComponent : sendToUserId()
+   deactivate UserInfoService
+else 
+    deactivate UserIdConverter
+end
+
+
+@enduml
