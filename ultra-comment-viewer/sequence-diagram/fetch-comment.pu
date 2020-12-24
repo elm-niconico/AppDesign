@@ -1,0 +1,14 @@
+@startuml UI-コメント取得
+    MainWindow -> CommentConnector : OnclickConnectCommentServer()
+    activate CommentConnector
+    loop
+    CommentConnector -> ConnectCommentServer : FectchCommentAsync()
+    CommentConnector <-- ConnectCommentServer  : 取得したコメント
+    end loop
+
+    CommentConnector -> CommentListView : ConnectCommentView()
+    CommentListView --> CommentListView : notify
+
+
+
+@enduml

@@ -9,4 +9,4 @@ POST /oauth2/access_token?code=def50200867f19f1a35d588cadb94ad65dc5a3d25e33a9418
 https://frontendapi.twitcasting.tv/users/{ユーザID}/latest-movie
 
 #websocketのURLを取得ht
-https://twitcasting.tv/eventpubsuburl.php
+tps://twitcasting.tv/eventpubsuburl.php

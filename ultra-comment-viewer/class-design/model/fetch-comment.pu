@@ -1,0 +1,129 @@
+@startuml コメント取得クラス図
+
+
+    class MainWindow{
+      +  ClickConnectionButtonServer()
+    }
+    class LiveStatusModel{
+        + isConnect
+    }
+    class CommentListModel{
+        + getCommentListModel()
+    }
+    class TODO{
+        - commentListModel
+        + ConnectCommentServer  
+        + DisconnetServer
+    }
+    class ConnectSwitcher{
+        + EventTODO()
+
+    }
+    TODO --> CommentListModel
+    MainWindow --> ConnectSwitcher
+    TODO *--> ConnectCommentServer
+    ConnectSwitcher *--> TODO
+    ConnectSwitcher --> LiveStatusModel
+    interface TcpClient{
+        fun ConnectServerService(api:Api)
+        fun receiveResponse(): Response
+    }
+    class NicoNicoTcpClient{
+
+    }
+    class TwicasTcpClient{
+
+    }
+
+
+    class NiconicoCommentServer{
+
+    }
+    class TwicasCommentServer{
+
+    }
+
+    class ConverterStandard { 
+    }
+
+    abstract class ConnectCommentServer {
+        + fun fetchCommentAsync(): UserInfoStandardModel;
+        - {abstract} fun extarctWebsokectUrl(): string;
+        - {abstract} async fun fetchCommentAsync(url:string): Response;
+        - {abstract} fun fun convertToUserInfoModel(response:Response): UserInfoModel;
+    }
+    note left of ServerFactory::createServer
+        コメントサーバを生成           
+    end note
+
+
+    interface LiveRestClient{
+        + fun getWebSocketUrl(): string;
+    }
+    class NiconicoRestClient{
+
+    }
+    class HttpClient{
+        + {static} getAsync(request:string): Response<String>;
+        + {static} postAsync(request:string): Response<String>;
+    }
+
+    class ServerFactory{
+        - select: SelectLive  
+        + fun createServer(): ConnectCommentServer
+    }
+
+
+    abstract class Converter{
+        - userInfo : Json
+        - userId: string
+        - userIcon: Uri
+        - comment: string
+
+        fun convertToUserInfo(response:Response):UserInfo
+        -  fun convertToJson(response: Response): Json
+        -  fun extractUserId(): string
+        -  fun extractUserIcon(): Uri
+        -  fun extractComment(): String
+        + {abstract} fun<T extends UserInfoModel> build(): T  
+    }
+
+    class UserInfoModel{
+        - userId : string;
+        - userIcon : Uri
+        - comment : string
+    }
+
+
+ 
+    
+    'コネクトコメントサーバ'
+    ConnectCommentServer *--|> LiveRestClient
+    ConnectCommentServer *-right-|> TcpClient
+    ConnectCommentServer *-left-|> Converter
+
+
+    'ユーザー情報
+    UserInfoModel +--> Converter
+    'コンバータ
+    Converter --> UserInfoModel
+    'クライアント
+    NicoNicoTcpClient .up.> TcpClient
+    TwicasTcpClient .left.> TcpClient
+    'ユーザー情報モデル
+    UserInfoStandardModel -right-|> UserInfoModel
+    'レストクライアント
+    NiconicoRestClient .right.|> LiveRestClient
+    TwicasRestClient   .left.|>  LiveRestClient
+    LiveRestClient -down-> HttpClient
+
+    
+    ConverterStandard -right-|> Converter
+    'コメントサーバ
+    NiconicoCommentServer --|> ConnectCommentServer
+    TwicasCommentServer   --|> ConnectCommentServer
+
+    'サーバーファクトリ-
+    ServerFactory --> NiconicoCommentServer
+    ServerFactory --> TwicasCommentServer
+@enduml

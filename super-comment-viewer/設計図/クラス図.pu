@@ -1,6 +1,7 @@
 @startuml コメント取
     '=======コンポーネント========
     'URLForm
+    
     class UrlFormComponent
     note left of UrlFormComponent
         放送Urlを入力させる
@@ -60,7 +61,7 @@
     UserIdConverter <|-down- TwicasIdConverter
     UserIdConverter <|-down- NicoNicoIdConverter
     'ConnectCommentServer
-    ConnectCommentServer <|-right- TwicasCommentServerService
+    ConnectCommentServer <-right-* TwicasCommentServerService
     ConnectCommentServer *-down--> ILiveWebSocketClient
     ConnectCommentServer *-down--> IConverterCommentInfoModel
 @enduml
