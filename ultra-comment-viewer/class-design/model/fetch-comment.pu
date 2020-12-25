@@ -10,7 +10,7 @@
     class CommentListModel{
         + getCommentListModel()
     }
-    class TODO{
+    class CommentGenerator{
         - commentListModel
         + ConnectCommentServer  
         + DisconnetServer
@@ -19,10 +19,10 @@
         + EventTODO()
 
     }
-    TODO --> CommentListModel
+    CommentGenerator --> CommentListModel
     MainWindow --> ConnectSwitcher
-    TODO *--> ConnectCommentServer
-    ConnectSwitcher *--> TODO
+    CommentGenerator *--> ConnectCommentServer
+    ConnectSwitcher *--> CommentGenerator
     ConnectSwitcher --> LiveStatusModel
     interface TcpClient{
         fun ConnectServerService(api:Api)
@@ -46,11 +46,9 @@
     class ConverterStandard { 
     }
 
-    abstract class ConnectCommentServer {
+    class ConnectCommentServer {
         + fun fetchCommentAsync(): UserInfoStandardModel;
-        - {abstract} fun extarctWebsokectUrl(): string;
-        - {abstract} async fun fetchCommentAsync(url:string): Response;
-        - {abstract} fun fun convertToUserInfoModel(response:Response): UserInfoModel;
+        
     }
     note left of ServerFactory::createServer
         コメントサーバを生成           
