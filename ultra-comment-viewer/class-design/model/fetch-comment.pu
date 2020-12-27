@@ -7,52 +7,52 @@
     class LiveStatusModel{
         + isConnect
     }
-    class CommentListModel{
-        + getCommentListModel()
+    class CommentModel{
+        + getCommentModel()
     }
     class CommentGenerator{
-        - commentListModel
+        - CommentModel
         + ConnectCommentServer  
         + DisconnetServer
     }
     class ConnectSwitcher{
         + EventTODO()
-
     }
-    CommentGenerator --> CommentListModel
+
+    
+    CommentGenerator --> CommentModel
     MainWindow --> ConnectSwitcher
     CommentGenerator *--> ConnectCommentServer
     ConnectSwitcher *--> CommentGenerator
     ConnectSwitcher --> LiveStatusModel
-    interface TcpClient{
-        fun ConnectServerService(api:Api)
-        fun receiveResponse(): Response
-    }
-    class NicoNicoTcpClient{
-
-    }
-    class TwicasTcpClient{
-
+    abstract class ABLiveWebSocketClient{
+        + ReadCommentFromServerAsync(string userId) : IAsyncEnumerable<CommentModel>
+        + DisconnetServer() : Task
+        # StartConnectServer() : Task<bool>
+        # ReceiveResponse() : IAsyncEnumerable<string>      
     }
 
-
-    class NiconicoCommentServer{
-
-    }
-    class TwicasCommentServer{
+    class NicoNicoABLiveWebSocketClient{
 
     }
-
-    class ConverterStandard { 
+    class TwicasABLiveWebSocketClient{
+        + 
     }
+
+    'Observer
+    class DisconnectObserver{
+        + CommmentGenerator generator;
+        + notify() : void
+    }
+    CommentGenerator -left-> DisconnectObserver
+    
+
 
     class ConnectCommentServer {
-        + fun fetchCommentAsync(): UserInfoStandardModel;
+        + fun fetchCommentAsync(): IAsyncEnumerable<CommentModel>;
         
     }
-    note left of ServerFactory::createServer
-        コメントサーバを生成           
-    end note
+    
 
 
     interface LiveRestClient{
@@ -66,25 +66,13 @@
         + {static} postAsync(request:string): Response<String>;
     }
 
-    class ServerFactory{
-        - select: SelectLive  
-        + fun createServer(): ConnectCommentServer
-    }
+   
 
 
     abstract class Converter{
-        - userInfo : Json
-        - userId: string
-        - userIcon: Uri
-        - comment: string
-
-        fun convertToUserInfo(response:Response):UserInfo
-        -  fun convertToJson(response: Response): Json
-        -  fun extractUserId(): string
-        -  fun extractUserIcon(): Uri
-        -  fun extractComment(): String
-        + {abstract} fun<T extends UserInfoModel> build(): T  
+        + {abstract} CovertToCommentModelFromJson(string reponse) : CommentModels
     }
+    Converter <|-- Twicas
 
     class UserInfoModel{
         - userId : string;
@@ -97,7 +85,7 @@
     
     'コネクトコメントサーバ'
     ConnectCommentServer *--|> LiveRestClient
-    ConnectCommentServer *-right-|> TcpClient
+    ConnectCommentServer *-right-|> ABLiveWebSocketClient
     ConnectCommentServer *-left-|> Converter
 
 
@@ -106,8 +94,8 @@
     'コンバータ
     Converter --> UserInfoModel
     'クライアント
-    NicoNicoTcpClient .up.> TcpClient
-    TwicasTcpClient .left.> TcpClient
+    NicoNicoABLiveWebSocketClient .up.> ABLiveWebSocketClient
+    TwicasABLiveWebSocketClient .left.> ABLiveWebSocketClient
     'ユーザー情報モデル
     UserInfoStandardModel -right-|> UserInfoModel
     'レストクライアント
@@ -117,11 +105,6 @@
 
     
     ConverterStandard -right-|> Converter
-    'コメントサーバ
-    NiconicoCommentServer --|> ConnectCommentServer
-    TwicasCommentServer   --|> ConnectCommentServer
+   
 
-    'サーバーファクトリ-
-    ServerFactory --> NiconicoCommentServer
-    ServerFactory --> TwicasCommentServer
 @enduml
