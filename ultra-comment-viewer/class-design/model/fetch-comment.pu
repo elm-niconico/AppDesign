@@ -39,6 +39,18 @@
         + 
     }
 
+    class SqliteSupport{
+        - CreateTable(): void
+        + InsertData(tableModel model) : void
+        + SelectTable(Primarykey key) : List<CommentModel>
+    }
+
+    class Logger{
+        + PushData(CommentModel model) : void
+        + SelectCommentLog() : List<CommentModel>
+    }
+
+
     'Observer
     class DisconnectObserver{
         + CommmentGenerator generator;
@@ -105,6 +117,8 @@
 
     
     ConverterStandard -right-|> Converter
-   
+    
+    CommentGenerator -up-> Logger
+    Logger -left-> SqliteSupport
 
 @enduml
