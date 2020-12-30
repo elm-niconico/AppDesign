@@ -6,7 +6,12 @@
     activate TwicasJsonConverter
     DropLogic <-- JsonConverter : ユーザー詳細情報モデル
     deactivate TwicasJsonConverter
-
-    DropLogic -> UserInfoWindow : Constractor(userInfoViewModel)
-    UserInfoWindow --> UserInfoWindow : Show()
+    DropLogic -> UserInfoFactory : FactroyUserInfoWindow(commentModel)
+    activate UserInfoFactory
+    UserInfoFactory --> UserInfoFactory : JudgeCreateWindow : UserInfoWindow
+    DropLogic <-- UserInfoFactory : UserInfoWindow
+    deactivate UserInfoFactory
+    
+    DropLogic -> UserInfoWindow : Show()
+    deactivate DropLogic
 @enduml

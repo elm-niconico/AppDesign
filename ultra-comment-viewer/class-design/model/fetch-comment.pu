@@ -19,8 +19,10 @@
         + EventTODO()
     }
 
-    abstract class UserInfoWindow{
 
+
+    class UserInfoWindowFactory{
+        + UserInfoWindowFactory(CommentModel model) : Window
     }
 
 
@@ -28,7 +30,7 @@
 
     CommentGenerator --> CommentModel
     MainWindow --> ConnectSwitcher
-    CommentGenerator *--> ConnectCommentServer
+    CommentGenerator *-down-> ConnectCommentServer
     ConnectSwitcher *--> CommentGenerator
     ConnectSwitcher --> LiveStatusModel
     abstract class ABLiveWebSocketClient{
@@ -66,13 +68,11 @@
 
     class ConnectCommentServer {
         + fun fetchCommentAsync(): IAsyncEnumerable<CommentModel>;
-        
     }
     
     class DropLogic{
         + DoStartOpenBrowser(string comment) : void
         + OpenUserInfoWindow(CommentModel model) : void
-
     }
 
     interface LiveRestClient{
@@ -123,10 +123,12 @@
     Logger -left-> SqliteSupport
 
     MainWindow -right-> DropLogic
-    DropLogic -right-> UserInfoWindow
 
-    'ユーザー詳細情報ウィンドウ
-    TwicasUserInfoWindow --|> UserInfoWindow
+    DropLogic -up-> UserInfoWindowFactory
+
+    UserInfoWindowFactory - TwicasUserInfoWindow : Windowを生成する
+
+   
 
 
 

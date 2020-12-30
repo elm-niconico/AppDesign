@@ -1,6 +1,11 @@
 #アクセストークン認可ページ遷移
 https://apiv2.twitcasting.tv/oauth2/authorize?client_id={YOUR_CLIENT_ID}&response_type=code&state={CSRF_TOKEN}
 
+#ライブのサムネイル画像を取得する
+#size 	"large" or "small"
+#position ライブ開始時点または最新を指定可能	"beginning" or "latest"
+https://apiv2.twitcasting.tv/users/twitcasting_jp/live/thumbnail?size=small&position=latest
+
 認可フロー遷移
 WebBrowser.Navigating イベントでなんとかできそう
 
