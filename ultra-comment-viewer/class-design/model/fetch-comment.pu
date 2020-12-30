@@ -19,7 +19,13 @@
         + EventTODO()
     }
 
-    
+    abstract class UserInfoWindow{
+
+    }
+
+
+
+
     CommentGenerator --> CommentModel
     MainWindow --> ConnectSwitcher
     CommentGenerator *--> ConnectCommentServer
@@ -57,15 +63,17 @@
         + notify() : void
     }
     CommentGenerator -left-> DisconnectObserver
-    
-
 
     class ConnectCommentServer {
         + fun fetchCommentAsync(): IAsyncEnumerable<CommentModel>;
         
     }
     
+    class DropLogic{
+        + DoStartOpenBrowser(string comment) : void
+        + OpenUserInfoWindow(CommentModel model) : void
 
+    }
 
     interface LiveRestClient{
         + fun getWebSocketUrl(): string;
@@ -78,9 +86,6 @@
         + {static} postAsync(request:string): Response<String>;
     }
 
-   
-
-
     abstract class Converter{
         + {abstract} CovertToCommentModelFromJson(string reponse) : CommentModels
     }
@@ -91,9 +96,6 @@
         - userIcon : Uri
         - comment : string
     }
-
-
- 
     
     'コネクトコメントサーバ'
     ConnectCommentServer *--|> LiveRestClient
@@ -114,11 +116,18 @@
     NiconicoRestClient .right.|> LiveRestClient
     TwicasRestClient   .left.|>  LiveRestClient
     LiveRestClient -down-> HttpClient
-
     
     ConverterStandard -right-|> Converter
     
     CommentGenerator -up-> Logger
     Logger -left-> SqliteSupport
+
+    MainWindow -right-> DropLogic
+    DropLogic -right-> UserInfoWindow
+
+    'ユーザー詳細情報ウィンドウ
+    TwicasUserInfoWindow --|> UserInfoWindow
+
+
 
 @enduml

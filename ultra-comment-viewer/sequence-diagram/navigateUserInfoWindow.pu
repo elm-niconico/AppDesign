@@ -1,0 +1,12 @@
+@startuml ユーザー詳細情報Windowへの遷移
+    MainWindow -> DropLogic : OpenUserInfoWindow(CommentModel)
+    activate DropLogic
+
+    DropLogic -> TwicasJsonConverter : ConvertToUserInfoViewModel
+    activate TwicasJsonConverter
+    DropLogic <-- JsonConverter : ユーザー詳細情報モデル
+    deactivate TwicasJsonConverter
+
+    DropLogic -> UserInfoWindow : Constractor(userInfoViewModel)
+    UserInfoWindow --> UserInfoWindow : Show()
+@enduml
