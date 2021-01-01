@@ -79,9 +79,9 @@
         + fun getWebSocketUrl(): string;
     }
     class NiconicoRestClient{
-
+        
     }
-    class HttpClient{
+    class ElmHttpClientUtil{
         + {static} getAsync(request:string): Response<String>;
         + {static} postAsync(request:string): Response<String>;
     }
@@ -89,12 +89,18 @@
     abstract class Converter{
         + {abstract} CovertToCommentModelFromJson(string reponse) : CommentModels
     }
+    class NicoNicoConverter{
+        + ConvertToDataPropsJsonModel(string dataProps) : DataPropsJsonModel
+    }
     Converter <|-- Twicas
 
     class UserInfoModel{
         - userId : string;
         - userIcon : Uri
         - comment : string
+    }
+    class HtmlParser{
+        + ParseAttribute(string html) : atteributeValue
     }
     
     'コネクトコメントサーバ'
@@ -115,8 +121,7 @@
     'レストクライアント
     NiconicoRestClient .right.|> LiveRestClient
     TwicasRestClient   .left.|>  LiveRestClient
-    LiveRestClient -down-> HttpClient
-    
+  
     ConverterStandard -right-|> Converter
     
     CommentGenerator -up-> Logger
@@ -128,8 +133,11 @@
 
     UserInfoWindowFactory - TwicasUserInfoWindow : Windowを生成する
 
-   
-
-
+    NiconicoRestClient -down-> ElmHttpClientUtil
+    TwicasRestClient -down->   ElmHttpClientUtil
+    
+    NiconicoRestClient -left-> HtmlParser
+    NiconicoRestClient -down-> NicoNicoConverter 
+    
 
 @enduml
