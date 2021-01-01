@@ -1,0 +1,3 @@
+#ユーザーのライブのHTMLページからWebSocketURLを取得するとき用
+#dataPropsの属性値を取り出す
+(?<=data-props=").+(?="></script>)

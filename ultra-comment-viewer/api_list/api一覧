@@ -1,12 +1,15 @@
 #アクセストークン認可ページ遷移
-https://apiv2.twitcasting.tv/oauth2/authorize?client_id={YOUR_CLIENT_ID}&response_type=code&state={CSRF_TOKEN}
+https://apiv2.twitcasting.tv/oauth2/authorize?client_id=1274162612133957632.c11cf15ae164a5a6835e27174ad61e915d12180bf24ed825d1b35f127ea5fa87&response_type=token&state=ELM
 
 #ライブのサムネイル画像を取得する
 #size 	"large" or "small"
 #position ライブ開始時点または最新を指定可能	"beginning" or "latest"
 https://apiv2.twitcasting.tv/users/twitcasting_jp/live/thumbnail?size=small&position=latest
 
-認可フロー遷移
+#movieIdから配信情報を取得する
+https://apiv2.twitcasting.tv/movies/{movie_id}
+
+#認可フロー遷移
 WebBrowser.Navigating イベントでなんとかできそう
 
 https://apiv2.twitcasting.tv/oauth2/authorize?client_id=1274162612133957632.c11cf15ae164a5a6835e27174ad61e915d12180bf24ed825d1b35f127ea5fa87&response_type=code&state=1234
@@ -19,3 +22,7 @@ https://frontendapi.twitcasting.tv/users/{ユーザID}/latest-movie
 
 #websocketのURLを取得ht
 tps://twitcasting.tv/eventpubsuburl.php
+
+#対象のユーザーのサポーターになる
+#-d  "target_user_ids": ["{userId}"]
+https://apiv2.twitcasting.tv/support
