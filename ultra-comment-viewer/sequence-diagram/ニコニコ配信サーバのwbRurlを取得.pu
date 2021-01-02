@@ -1,0 +1,16 @@
+@startuml ニコニコ配信サーバのURLを取得するまで
+    ConnectCommentServer -> NicoNicoRestClient : GetWebSocketUrlAsync(liveId)
+    activate NicoNicoRestClient
+    NicoNicoRestClient -> NicoNicoHtmlParser : GetSessionWebUrl()
+    NicoNicoRestClient <-- NicoNicoHtmlParser : セッションサーバのURL
+
+    NicoNicoRestClient -> NicoNicoSessionConnector : FetchCommentServerUrl(セッションサーバのURL)
+    activate NicoNicoSessionConnector
+    
+    NicoNicoSessionConnector -> NicoNicoSessionWebSocketClient : GetResponseAsync()
+    NicoNicoSessionWebSocketClient -> NicoNicoSessionConnector : resoponseMessage
+
+    NicoNicoSessionConnector -> NicoNicoJsonConverter : ConvertToSessionResponseModel
+    NicoNicoSessionConnector --> NicoNicoRestClient : 配信サーバのURL
+
+@enduml

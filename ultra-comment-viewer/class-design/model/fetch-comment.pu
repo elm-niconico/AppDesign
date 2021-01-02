@@ -28,7 +28,7 @@
 
 
 
-    CommentGenerator --> CommentModel
+   
     MainWindow --> ConnectSwitcher
     CommentGenerator *-down-> ConnectCommentServer
     ConnectSwitcher *--> CommentGenerator
@@ -44,7 +44,7 @@
 
     }
     class TwicasABLiveWebSocketClient{
-        + 
+        
     }
 
     class SqliteSupport{
@@ -57,7 +57,6 @@
         + PushData(CommentModel model) : void
         + SelectCommentLog() : List<CommentModel>
     }
-
 
     'Observer
     class DisconnectObserver{
@@ -86,14 +85,19 @@
         + {static} postAsync(request:string): Response<String>;
     }
 
-    abstract class Converter{
-        + {abstract} CovertToCommentModelFromJson(string reponse) : CommentModels
+
+    class NicoNicoHtmlParser{
+        + GetSessionWebSocketUrl()
     }
+
+    abstract class CommentConverter{
+        + {abstract} CovertToCommentViewModel(string reponse) : CommentModels
+    }
+
     class NicoNicoConverter{
         + ConvertToDataPropsJsonModel(string dataProps) : DataPropsJsonModel
     }
-    Converter <|-- Twicas
-
+    
     class UserInfoModel{
         - userId : string;
         - userIcon : Uri
@@ -103,16 +107,22 @@
         + ParseAttribute(string html) : atteributeValue
     }
     
+    class NicoNicoSessionConnector{
+        + FetchCommentServerUrlAsync(string sesisonWebSocketUrl) : Task<string>
+    }
+
+    class NicoNicoSessionWebSocketClient{
+        + ExtractWebSocketResponse()
+    }
+
+        
+
+
     'コネクトコメントサーバ'
+    ConnectCommentServer *-left-|> CommentConverter
     ConnectCommentServer *--|> LiveRestClient
     ConnectCommentServer *-right-|> ABLiveWebSocketClient
-    ConnectCommentServer *-left-|> Converter
 
-
-    'ユーザー情報
-    UserInfoModel +--> Converter
-    'コンバータ
-    Converter --> UserInfoModel
     'クライアント
     NicoNicoABLiveWebSocketClient .up.> ABLiveWebSocketClient
     TwicasABLiveWebSocketClient .left.> ABLiveWebSocketClient
@@ -121,8 +131,6 @@
     'レストクライアント
     NiconicoRestClient .right.|> LiveRestClient
     TwicasRestClient   .left.|>  LiveRestClient
-  
-    ConverterStandard -right-|> Converter
     
     CommentGenerator -up-> Logger
     Logger -left-> SqliteSupport
@@ -134,10 +142,13 @@
     UserInfoWindowFactory - TwicasUserInfoWindow : Windowを生成する
 
     NiconicoRestClient -down-> ElmHttpClientUtil
-    TwicasRestClient -down->   ElmHttpClientUtil
-    
-    NiconicoRestClient -left-> HtmlParser
-    NiconicoRestClient -down-> NicoNicoConverter 
-    
+    TwicasRestClient   -down->   ElmHttpClientUtil 
+
+    NiconicoRestClient -left-> NicoNicoHtmlParser    
+    NiconicoRestClient -down-> NicoNicoSessionConnector
+
+    NicoNicoSessionConnector -down-> NicoNicoSessionWebSocketClient
+    NicoNicoHtmlParser -down-> NicoNicoConverter
+
 
 @enduml
