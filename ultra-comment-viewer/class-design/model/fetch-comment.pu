@@ -65,8 +65,9 @@
     }
     CommentGenerator -left-> DisconnectObserver
 
-    class ConnectCommentServer {
-        + fun fetchCommentAsync(): IAsyncEnumerable<CommentModel>;
+    abstract class ConnectCommentServer   {
+        + fetchCommentAsync(): IAsyncEnumerable<CommentModel>;
+        {abstract} CheckCommentServerStatus() : Task<LiveStatus>
     }
     
     class DropLogic{
@@ -150,5 +151,6 @@
     NicoNicoSessionConnector -down-> NicoNicoSessionWebSocketClient
     NicoNicoHtmlParser -down-> NicoNicoConverter
 
+    TwicasConnectCommentServer -|> ConnectCommentServer
 
 @enduml
