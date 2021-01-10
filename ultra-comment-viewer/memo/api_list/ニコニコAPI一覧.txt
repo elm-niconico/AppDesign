@@ -1,0 +1,5 @@
+#ユーザーアイコン取得api
+http://usericon.nimg.jp/usericon/{{user_id}/10000}/{user_id}.jpg
+
+#ユーザーネーム XML
+http://seiga.nicovideo.jp/api/user/info?id={user_id}

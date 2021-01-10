@@ -1,0 +1,3 @@
+//視聴数のカウントを取得
+<span class___content___1_nBL/>
+

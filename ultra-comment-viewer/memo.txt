@@ -1,9 +1,0 @@
-ツイキャスのメッセージサーバのWebsocketのURL返してくれるAPIがある
-そこにリクエスト投げてURL取得してからそこにWebsocketつないだら取得できた
-このAPIリファラで投げたURLのライブのメッセージ鯖返してるっぽいな]
-https://jsfiddle.net/ozhf4Lpg/
-
-
-
-============= electron 読み上げ ==============
-speechSynthesis.speak(new SpeechSynthesisUtterance("さかな"))
