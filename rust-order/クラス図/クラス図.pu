@@ -1,34 +1,46 @@
 @startuml RustOrderクラス図
     class Main
-    class Order
+
     enum Status{
         PRINT,
         EXIT
+    }
+    
+    class Excuter{
+        - cummand: Command[]
+        + excute()
     }
 
     class Print{
         
     }
 
-    class CommandReuslt{
+    class CommandResult{
         commandResult : Object;
         Status
     }
 
     interface ICommand{
-        + excute() : CommandReuslt
+        + excute() : CommandResult
     }
-
+    
     class Ls {}
 
-    Main  -down-> Order
+    class CommandFactory{
+        + CommandFactory(command: string) : Command[]
+        - newCommand(commandName:string, option) : Command
+    }
 
     'コマンドリザルト
-    CommandReuslt *-> Status
+    CommandResult *-> Status
+    Main -> CommandFactory
+    Main -down-> Excuter
+    Excuter *-down-> ICommand
+    Excuter -> Prin
 
     'コマンド
-    ICommand -right-> CommandReuslt
-    Order *-down-> ICommand
-    Ls .up.|> ICommand
+    ICommand -down-> CommandResult
+    Ls .left.|> ICommand
+
 
 @enduml
