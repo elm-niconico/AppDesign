@@ -1,0 +1,17 @@
+@startuml
+    activate Main
+    
+    Main ->  CommandBuilder : BuildCommand()
+    activate CommandBuilder
+    CommandBuilder --> CommandBuilder : ReadCommand(ユーザーが入力したコマンド) : cmd(コマンド配列)
+    CommandBuilder --> CommandBuilder : newCommand(cmd[0](コマンド名), cmd[1..]) : コマンドクラス
+    Main <-- CommandBuilder : コマンドクラスの配列
+    deactivate CommandBuilder
+
+    Main -> ICommand : doCommand() : CommandResult
+    activate ICommand
+    Main <-- ICommand : COmmandResult
+    deactivate ICommand
+
+
+@enduml

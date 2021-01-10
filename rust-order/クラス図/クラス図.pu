@@ -1,0 +1,35 @@
+@startuml RustOrderクラス図
+    class Main
+    class Order
+    enum Status{
+        PRINT,
+        EXIT
+    }
+
+    class Print{
+        
+    }
+
+    class CommandReuslt{
+        commandResult : Object;
+        Status
+    }
+
+
+    interface ICommand{
+        + excute() : CommandReuslt
+    }
+
+    class Ls {}
+    
+    Main  -down-> Order
+
+    'コマンドリザルト
+    CommandReuslt *-> Status
+
+    'コマンド
+    ICommand -right-> CommandReuslt
+    Order *-down-> ICommand
+    Ls .up.|> ICommand
+
+@enduml
