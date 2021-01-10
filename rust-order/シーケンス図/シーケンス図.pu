@@ -3,7 +3,7 @@
     
     Main ->  CommandBuilder : BuildCommand()
     activate CommandBuilder
-    Command
+
     Builder --> CommandBuilder : ReadCommand(ユーザーが入力したコマンド) : cmd(コマンド配列)
     CommandBuilder --> CommandBuilder : newCommand(cmd[0](コマンド名), cmd[1..]) : コマンドクラス
     Main <-- CommandBuilder : コマンドクラスの配列
