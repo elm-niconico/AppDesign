@@ -15,13 +15,12 @@
         Status
     }
 
-
     interface ICommand{
         + excute() : CommandReuslt
     }
 
     class Ls {}
-    
+
     Main  -down-> Order
 
     'コマンドリザルト
