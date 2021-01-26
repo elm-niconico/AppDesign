@@ -1,0 +1,27 @@
+@startuml クラス図
+    '=========== Tcp側 =================
+    class TcpServer{
+        + OnReceiveMessage(e Data)
+    }
+
+    class DomOperator{
+        + InsertComment()
+    }
+
+    TcpServer --> DomOperator
+    '=========== View側 ==================
+    class Store
+
+    class Action
+
+    class Reducer
+
+    class CommentListComponent{
+        - commentlist : string[]
+    }
+
+    class Main  
+
+    Main -down-> CommentListComponent 
+
+@enduml

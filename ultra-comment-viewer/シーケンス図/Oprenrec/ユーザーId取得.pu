@@ -1,0 +1,19 @@
+@startuml ユーザーid取得
+    Main -> Checker : URL || LIVEID || USERID
+    activate Checker
+    Checker --> Checker : IsPunrecUrl() : url?
+    alt オープンレックのURLなら 
+        Checker -> PunrecRestClient : URL 
+        Checker <-- PunrecRestClient : HTML
+        Checker -> PunrecHtmlParser : ExtractUserId(html)
+        Checker <-- PunrecHtmlParser : ユーザーID
+    else URLじゃない
+        Checker -> Checker : CreateLiveUrl()
+         Checker -> PunrecRestClient : URL 
+        Checker <-- PunrecRestClient : HTML
+        Checker -> PunrecHtmlParser : ExtractUserId(html)
+        Checker <-- PunrecHtmlParser : ユーザーID
+    end
+
+    Main <-- Checker : (放送に接続できたか, ユーザーID)
+@enduml

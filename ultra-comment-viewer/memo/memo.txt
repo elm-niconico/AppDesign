@@ -6,4 +6,5 @@ https://jsfiddle.net/ozhf4Lpg/
 
 
 ============= electron 読み上げ ==============
-speechSynthesis.speak(new SpeechSynthesisUtterance("さかな"))
+speechSynthesis.speak(new SpeechSynthesisUtterance("さかな")
+

@@ -26,3 +26,4 @@ tps://twitcasting.tv/eventpubsuburl.php
 #対象のユーザーのサポーターになる
 #-d  "target_user_ids": ["{userId}"]
 https://apiv2.twitcasting.tv/support
+

@@ -1,0 +1,17 @@
+@startuml クラス図
+    '================ View ==================
+    class Index
+    class SubmitForm
+
+    '=============== Logic =========================
+    class SettingsConnector
+    class FileOperator
+    class CommentStyleModel
+    
+    SubmitForm -> SettingsConnector
+    SettingsConnector -> FileOperator
+    FileOperator -> CommentStyleModel
+
+
+
+@enduml

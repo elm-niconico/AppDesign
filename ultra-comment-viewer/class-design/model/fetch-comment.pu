@@ -15,21 +15,17 @@
         + ConnectCommentServer  
         + DisconnetServer
     }
-    class ConnectSwitcher{
-        + EventTODO()
+
+    class GeneratorWebSocketServer{
+        + SendCommentAsync(CommnetViewModel model) : Task
+        - SendMessageToClientAsync(string json)
     }
-
-
 
     class UserInfoWindowFactory{
         + UserInfoWindowFactory(CommentModel model) : Window
     }
-
-
-
-
-   
-    MainWindow --> ConnectSwitcher
+    
+    MainWindow --> CommentGenerator
     CommentGenerator *-down-> ConnectCommentServer
     ConnectSwitcher *--> CommentGenerator
     ConnectSwitcher --> LiveStatusModel
@@ -116,7 +112,8 @@
         + ExtractWebSocketResponse()
     }
 
-        
+    'コメントジェネレーター
+    CommentGenerator -> GeneratorWebSocketServer 
 
 
     'コネクトコメントサーバ'

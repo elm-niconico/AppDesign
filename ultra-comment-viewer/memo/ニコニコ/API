@@ -1,0 +1,4 @@
+#ユーザーのライブ&コミュティ情報取得
+http://live.nicovideo.jp/api/getplayerstatus/{ライブID}
+#エモーションサムネイル
+https://api.emotion.nicovideo.jp/v1/emotion/emoagv/{ライブID}/emotiongroups
