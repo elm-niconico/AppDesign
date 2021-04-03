@@ -1,0 +1,26 @@
+@startuml Qiitaの情報確認
+    QiitaJob -> QiitaClient :isLatestArticle()
+    activate QiitaJob
+    activate QiitaClient
+    QiitaClient --> QiitaClient : fetchLatestArticle(tags? : string[]): ArticleJsonModel
+    QiitaClient -> DateManager : isNotOverTime(記事の投稿時間)
+    QiitaClient <-- DateManager : 投稿時間が指定の時間を超えていないか
+
+    alt 投稿時間が指定の時間以内に投稿されている
+        QiitaJob --> QiitaClient : latestArticle = 取得した記事   
+    end
+
+    QiitaJob <--QiitaClient : 最新の記事が投稿されているか
+
+    alt 最新の記事が投稿されていた場合
+        QiitaJob <-- QiitaClient  : 最新の記事の情報
+        deactivate QiitaClient
+
+        QiitaJob -> ArticleNotify : notifyNewArticle(tag: ArticleJsonModel)
+        activate ArticleNotify
+        deactivate ArticleNotify
+    end
+
+    deactivate QiitaClient
+
+@enduml

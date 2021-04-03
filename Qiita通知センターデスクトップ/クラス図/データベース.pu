@@ -1,0 +1,13 @@
+@startuml データベース
+    interface DatabaseOperator{
+        + add(tagId:string): boolean
+        + delete(tagId:string): boolean
+        + update(oldId:string, newId:string): boolean
+        + select(): TagModel[]
+        + selectById(tagId): TagModel
+        + hasData(tagId): boolean
+    }
+
+    DatabaseOperator <|.. MockDatabase
+    DatabaseOperator <|..JsonStore
+@enduml

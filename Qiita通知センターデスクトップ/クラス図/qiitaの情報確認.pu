@@ -1,0 +1,28 @@
+@startuml Qiitaの情報
+    class QiitaArticleClient{
+        fetchLatestArticle(): TagModel
+        collectQiitaTags(tagId?:string[]): string[]
+    }
+
+    abstract class Job{
+        + runAsync(): Promise
+        - notify()
+        - runMethodAsync(): boolean
+    }
+
+    class QiitaJob{
+
+    }
+
+    class DateManager{
+        + isOverTime()
+        + isNotOverTime()
+    }
+
+    Job <|-- QiitaJob
+    QiitaJob -> QiitaArticleClient
+
+    QiitaArticleClient --> DateManager
+
+
+@enduml

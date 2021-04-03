@@ -1,0 +1,36 @@
+@startuml タグ追加
+    actor Command
+    
+    Command -> AddTag : runMethod()
+    
+    activate AddTag
+
+    AddTag -> TagModel : setTagId(_tagId)
+    activate TagModel
+    deactivate TagModel
+
+    AddTag --> AddTag : createUpdateAt()
+
+    AddTag -> TagModel : setUpdateAt(updateAt)
+    activate TagModel
+    deactivate TagModel
+    
+    '重複するデータが存在するかチェック
+    AddTag --> DatabaseOperator : addTag(tag)
+    activate DatabaseOperator
+    DatabaseOperator --> DatabaseOperator : hasData(tagId)
+    AddTag <-- DatabaseOperator : 存在するか
+    deactivate DatabaseOperator
+
+    alt 既にシステム上に同じデータが存在していた場合 
+        Command <-- AddTag : true
+
+    else 重複なし
+       
+        deactivate DatabaseOperator
+        Command <-- AddTag : false
+    end
+
+    deactivate AddTag
+
+@enduml

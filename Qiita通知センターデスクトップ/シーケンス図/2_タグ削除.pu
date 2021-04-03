@@ -1,0 +1,27 @@
+@startuml タグ追加
+    actor Command
+    
+    Command -> DeleteTag : runMethod()
+    
+    activate DeleteTag
+
+    '重複するデータが存在するかチェック
+    DeleteTag --> DatabaseOperator : deleteData(tag: TagModel)
+    activate DatabaseOperator
+    DatabaseOperator <-- DatabaseOperator : 存在するか
+    
+
+
+    alt 該当するデータが存在しなかった場合 
+        Command <-- DeleteTag : true
+
+    else 重複なし
+        DatabaseOperator --> DatabaseOperator: deleteData()
+
+       
+        Command <-- DeleteTag : false
+    end
+    deactivate DatabaseOperator
+    deactivate DeleteTag
+
+@enduml

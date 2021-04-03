@@ -1,0 +1,14 @@
+@startuml タグ操作_シーケンス
+    actor actor
+    actor -> Command: execute()
+    activate Command
+    Command --> Command : runMethod():result
+    alt 処理が失敗したとき 
+        Command -> IMessageCreator : showErrorMessage()
+        activate IMessageCreator
+        deactivate IMessageCreator
+    end
+
+    deactivate Command
+
+@enduml

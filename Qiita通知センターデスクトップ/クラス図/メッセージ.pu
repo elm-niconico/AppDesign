@@ -1,0 +1,17 @@
+@startuml メッセージ
+
+    interface IMessenger{
+        + showMessage()
+    }
+    class TagDuplicateError{
+        - tagId: string
+        - updateAt: Date
+    }
+    class TagNotExistsError{
+        - tagId: string
+    }
+
+    IMessenger <|-- TagDuplicateError
+    IMessenger <|-- TagNotExistsError
+
+@enduml

@@ -1,0 +1,15 @@
+@startuml タグ管理
+    !include メッセージ.pu
+    !include データベース.pu
+
+    class TagRepository{
+        + addTag:(tagId:string)
+        + deleteTag(tagId:string)
+        + editTag(oldTagId: string, newTagId: string)
+        + fetchAllTag(): TagModel
+        + fetchTagById(): TagModel
+    }
+
+    TagRepository *--> DatabaseOperator
+    TagRepository ..> IMessenger
+@enduml

@@ -1,0 +1,6 @@
+@startuml Employ
+    Employee *-right-> PaymentSchedule : Its
+    WeeklySchedule -up-|> PaymentSchedule
+    MonthySchedule -up-|> PaymentSchedule
+    BiweeklySchedule -up-|> PaymentSchedule
+@enduml

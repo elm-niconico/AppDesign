@@ -1,0 +1,26 @@
+@startuml タグ編集
+    actor Command
+    
+    Command -> EditTag : runMethod()
+    
+    activate EditTag
+
+    '重複するデータが存在するかチェック
+    EditTag --> DatabaseOperator : editData(tag: TagModel)
+    activate DatabaseOperator
+    EditTag <-- DatabaseOperator : 新規に登録されるタグが既に存在するか
+
+
+    alt 該当するデータが存在した場合
+        Command <-- EditTag : true
+
+    else 重複なし
+        DatabaseOperator --> DatabaseOperator: updateData()
+       
+       
+        Command <-- EditTag : false
+    end
+ deactivate DatabaseOperator
+    deactivate EditTag
+
+@enduml
