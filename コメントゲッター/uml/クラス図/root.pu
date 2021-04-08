@@ -1,0 +1,35 @@
+@startuml クラス図 
+
+    abstract class LiveWebSocektToDO {
+        - liveUrl  : string
+        - liveProtform : LiveProtform 
+        - callback: (error: Error|null, commentModel: CommentModel) => void
+    }
+
+    class CommentModel{       
+        userId   : string
+        userName : string
+        userIconUrl : string
+        comment  : string
+        liveProtform : liveProtform
+    }
+
+    note left of CommentModel
+        コメントデータクラス
+    end note
+
+    class LiveWebSocket {
+        - liveUrl  : string
+        - liveProtform : LiveProtform 
+        - callback: (error: Error|null, message: any) => void
+    }
+
+    interface IRestClient{
+        + fetchWebsocketUrlAsync(liveUrl: string): string
+    }
+
+    LiveWebSocket *--> IRestClient
+    LiveWebSocektToDO *--> LiveWebSocket
+    LiveWebSocektToDO .left.> CommentModel
+    LiveWebSocket *--> WebSocket
+@enduml
